@@ -11,9 +11,6 @@ import kotlin.reflect.KClass
  * Created by danfma on 03/04/17.
  */
 
-@JsName("map")
-inline fun <T, TResult> Subscribable<T>.map(transformer: (T) -> TResult): Subscribable<TResult> =
-    this.asDynamic().map(transformer.asDynamic())
 
 
 @JsName("flatMap")
@@ -36,9 +33,7 @@ inline fun <T> Subscribable<T>.toArray(): Subscribable<Array<T>> =
     this.asDynamic().toArray()
 
 
-@JsName("filter")
-inline fun <T> Subscribable<T>.filter(filter: (T) -> Boolean): Subscribable<T> =
-    this.asDynamic().filter(filter.asDynamic())
+
 
 
 @JsName("doWithObserver")
@@ -170,15 +165,4 @@ inline fun <T> Subscribable<T>.take(count: Int): Subscribable<T> =
     this.asDynamic().take(count)
 
 
-// Custom
 
-@JsName("ofType")
-inline fun <reified R> Subscribable<*>.ofType(): Subscribable<R> =
-    this.map { it as? R }
-        .filter { it != null }
-        .map { it!! }
-
-@JsName("ofTypeOfClass")
-inline fun <R : Any> Subscribable<*>.ofType(type: KClass<R>): Subscribable<R> =
-    this.filter { type.isInstance(it) }
-        .map { it as R }
